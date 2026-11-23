@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import Chat from './Chat'
+import PainelPrevia, { type Previa } from './PainelPrevia'
+import { iniciarPolimento } from './polimento'
 import { CLINICA } from '../shared/clinica'
 
 const s = (id: string) => CLINICA.servicos.find((x) => x.id === id)!
@@ -23,8 +25,11 @@ function usarKit() {
   }, [])
 }
 
+const PREVIA: Previa = { painel: 'Painel da recepção', resumo: [['3', 'banhos e consultas marcados fora do horário'], ['1', 'caso para a veterinária']], listaTitulo: 'Marcados pela Nina esta noite', itens: [['21:30', 'Thor, golden', 'Banho e tosa, porte G', 'Sex 9h'], ['22:05', 'Mel, shih-tzu', 'Banho, porte P', 'Sex 14h'], ['06:40', 'Bob, vira-lata', 'Consulta veterinária', 'Sáb 8h']], pedidoTitulo: 'Para a veterinária responder', pedido: ['Cachorro vomitando desde ontem', 'A Nina não deu palpite: avisou a veterinária e passou o contato do plantão.'] }
+
 export default function App() {
   usarKit()
+  useEffect(() => iniciarPolimento(), [])
 
   return (
     <>
@@ -103,7 +108,7 @@ export default function App() {
                 <li><span>Veterinária</span><span>Até 19h de segunda a sexta</span></li>
               </ul>
             </div>
-            <figure className="pl-photo pl-photo--end span-6 start-7" style={{ ['--pl-r' as string]: 1.2 }}><img src="/img/dupla.jpg" alt="Corgi e cachorro de pelo claro sentados na calçada em frente a um canteiro de flores" loading="lazy" /></figure>
+            <figure className="develop span-6 start-7" data-moment="picture-develops"><img src="/img/dupla.jpg" alt="Corgi e cachorro de pelo claro sentados na calçada em frente a um canteiro de flores" width="1067" height="1600" loading="lazy" /></figure>
             </div>
           </div>
         </section>
@@ -168,7 +173,7 @@ export default function App() {
               <div className="btn-row"><a className="btn btn--primary" href="https://wa.me/5519994450160?text=Oi%2C%20Alan%21%20Vi%20a%20demonstra%C3%A7%C3%A3o%20da%20Nina%20e%20quero%20uma%20assistente%20assim%20para%20o%20meu%20pet%20shop." target="_blank" rel="noreferrer">Quero uma Nina no meu pet shop</a></div>
               <p className="t-small muted">Fala direto com o Alan Souza, desenvolvedor de IA em São Carlos, pelo WhatsApp. <a className="link" href="https://alansouza.netlify.app" target="_blank" rel="noreferrer">Ver o portfólio</a></p>
             </div>
-            <figure className="develop span-6 start-7" data-moment="picture-develops"><img src="/img/corgi.jpg" alt="Filhote de corgi sentado num fundo laranja" width="1084" height="1600" loading="lazy" /></figure>
+            <PainelPrevia p={PREVIA} />
           </div>
         </section>
       </main>

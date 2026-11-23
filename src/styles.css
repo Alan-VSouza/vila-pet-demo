@@ -83,3 +83,84 @@
 /* as duas fotos ao lado dos preços: altas no computador, uma por linha no celular */
 .foto-preco { display: block; --pl-r: .6; }
 @media (max-width: 639px) { .foto-preco { grid-column: 1 / -1; --pl-r: 1.25; } }
+
+/* ---------- movimento da página (src/polimento.ts) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+html { scroll-padding-top: calc(var(--nav) + 16px); }
+
+/* barra de navegação fixa: sombra leve ao rolar */
+.nav { transition: transform 320ms cubic-bezier(.22,1,.36,1), box-shadow 200ms ease, background-color 200ms ease; }
+.nav.is-scrolled { box-shadow: 0 1px 0 var(--line), 0 8px 24px -16px color-mix(in oklab, var(--p-ink) 30%, transparent); }
+.nav__progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--p-accent);
+  transform-origin: left; transform: scaleX(var(--pl-p, 0)); pointer-events: none; }
+/* a seção em que o leitor está: a mesma barra de 2px do kit sob a palavra, crescendo da esquerda */
+.nav__link[aria-current="location"]::after { content: ""; position: absolute; left: var(--s-3); right: var(--s-3); bottom: -2px; height: 2px;
+  border-radius: 2px; background: var(--p-accent); animation: pl-sub 260ms cubic-bezier(.22,1,.36,1); transform-origin: left; }
+.nav__link[aria-current="location"] { color: var(--p-accent); }
+@keyframes pl-sub { from { transform: scaleX(0); } }
+
+/* entradas: texto sobe 18px e aparece; listas e cartões em cascata; fotos e chat abrem de dentro */
+html.pl-js .rv { opacity: 0; transform: translateY(18px);
+  transition: opacity 700ms cubic-bezier(.22,1,.36,1), transform 800ms cubic-bezier(.22,1,.36,1);
+  transition-delay: calc(var(--rv-i, 0) * 70ms); }
+html.pl-js .rv.is-in { opacity: 1; transform: none; }
+html.pl-js[data-motion] .card.rv { transition: opacity 700ms cubic-bezier(.22,1,.36,1), transform 800ms cubic-bezier(.22,1,.36,1); transition-delay: calc(var(--rv-i, 0) * 70ms); }
+html.pl-js .rv-media { clip-path: inset(10% 8% 10% 8% round var(--r-lg, 20px)); opacity: .001;
+  transition: clip-path 1100ms cubic-bezier(.22,1,.36,1), opacity 500ms ease; transition-delay: 80ms; }
+html.pl-js .rv-media.is-in { clip-path: inset(0 0 0 0 round var(--r-lg, 20px)); opacity: 1; }
+html.pl-js .rv-media img { scale: 1.12; transition: scale 1400ms cubic-bezier(.22,1,.36,1); transition-delay: 80ms; }
+html.pl-js .rv-media.is-in img { scale: 1; }
+/* o chat não tem foto: entra subindo junto com a abertura */
+html.pl-js .chat-frame.rv-media { transform: translateY(24px); transition: clip-path 1000ms cubic-bezier(.22,1,.36,1), opacity 500ms ease, transform 900ms cubic-bezier(.22,1,.36,1); }
+html.pl-js .chat-frame.rv-media.is-in { transform: none; }
+
+/* profundidade: a foto, 10% maior que a moldura, anda até 4% dentro dela (scale e translate, sem mexer no tamanho da caixa) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__media, .frame--photo, .close__media { overflow: hidden; }
+  .hero__media img, .frame--photo .frame__img, .close__media img { scale: 1.1; translate: 0 var(--pl-y, 0); }
+  html.pl-js .rv-media img { scale: 1.22; }
+  html.pl-js .rv-media.is-in img { scale: 1.1; }
+}
+
+/* tablet (640 a 1023): as colunas empilham, então o bloco cresce com o conteúdo em vez de caber à força
+   em uma tela (antes a foto dos convênios invadia a seção seguinte) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  main > section > .wrap > .grid.fill { flex: 1 0 auto; min-height: auto; }
+  main > section .frame--photo:not(.frame--fill) { aspect-ratio: 4 / 3 !important; max-height: none !important; }
+}
+
+/* ---------- prévia do painel da recepção (seção para empresas) ---------- */
+.previa { align-self: start; border-radius: var(--r-lg, 20px); overflow: hidden; background: #fff;
+  border: 1px solid color-mix(in oklab, var(--p-ink) 12%, transparent);
+  box-shadow: 0 24px 60px -32px color-mix(in oklab, var(--p-ink) 35%, transparent); }
+.previa__barra { display: flex; align-items: center; gap: 12px; padding: 12px 16px; font-size: 14px; color: var(--p-muted);
+  border-bottom: 1px solid color-mix(in oklab, var(--p-ink) 10%, transparent); background: var(--p-bg); }
+.previa__pontos { display: inline-flex; gap: 6px; } .previa__pontos i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in oklab, var(--p-ink) 16%, transparent); }
+.previa__corpo { padding: 24px; display: grid; gap: 16px; }
+.previa__resumo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.previa__resumo div { background: var(--p-inv-bg); color: var(--p-inv-ink); border-radius: 12px; padding: 16px 18px; }
+.previa__resumo strong { display: block; font: 400 40px/1.05 var(--font-display); }
+.previa__resumo span { font-size: 14px; color: var(--p-inv-muted); }
+.previa__titulo { margin: 8px 0 0; font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--p-muted); }
+.previa__lista { list-style: none; margin: 0; padding: 0; }
+.previa__lista li { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: baseline; padding: 12px 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--p-ink) 9%, transparent); font-size: 15px; }
+.previa__hora { color: var(--p-muted); font-variant-numeric: tabular-nums; font-size: 14px; }
+.previa__nome { font-weight: 500; } .previa__nome small { display: block; font-weight: 400; color: var(--p-muted); font-size: 14px; }
+.previa__dia { font-weight: 500; color: var(--p-accent); background: var(--p-surface); padding: 4px 10px; border-radius: 999px; font-size: 14px; white-space: nowrap; }
+.previa__pedido { display: grid; gap: 4px; padding: 14px 16px; border-radius: 12px; font-size: 15px;
+  background: color-mix(in oklab, #c9822b 12%, #fff); border: 1px solid color-mix(in oklab, #c9822b 30%, transparent); }
+.previa__pedido span { color: color-mix(in oklab, var(--p-ink) 78%, #fff); font-size: 14px; }
+@media (max-width: 1023px) { .previa { margin-top: var(--s-7); } }
+@media (max-width: 420px) { .previa__corpo { padding: 16px; } .previa__resumo strong { font-size: 32px; } .previa__lista li { grid-template-columns: 48px 1fr auto; gap: 8px; } }
+
+/* celular e tablet: a seção tem a altura do que ela mostra, sem tela vazia entre uma e outra */
+@media (max-width: 1023px) {
+  main > section:not(.hero), footer.closing { min-height: 0 !important; }
+  /* sem altura fixa, o bloco que "enche a tela" passa a ter a altura do próprio conteúdo */
+  main > section > .wrap > .fill, main > section > .wrap > .grid.fill { flex: 0 0 auto !important; height: auto !important; min-height: 0; }
+  .grid.fill > .frame--fill { flex: none !important; height: auto !important; aspect-ratio: 4 / 3; }
+  .grid.fill > .chat-frame { flex: none; }
+}
