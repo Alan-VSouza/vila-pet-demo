@@ -164,3 +164,8 @@ html.pl-js .chat-frame.rv-media.is-in { transform: none; }
   .grid.fill > .frame--fill { flex: none !important; height: auto !important; aspect-ratio: 4 / 3; }
   .grid.fill > .chat-frame { flex: none; }
 }
+
+/* a barra fixa de ação some quando o rodapé aparece (src/polimento.ts), para não cobrir os links dele */
+html.pl-rodape .actionbar { opacity: 0 !important; visibility: hidden; pointer-events: none; transition: opacity 200ms ease, visibility 0s linear 200ms; }
+/* a prévia do painel é uma janela: o miolo tem fundo próprio, como a tela de um app */
+.previa__corpo { background: #fff; }

@@ -62,6 +62,15 @@ export function iniciarPolimento(): () => void {
     limpar.push(() => barra?.remove())
   }
 
+  // no celular, a barra fixa de ação sai quando os links do rodapé chegam, para não cobrir nenhum deles
+  // (o mesmo botão já está no fechamento logo acima)
+  const rodape = document.querySelector('.closing__links')
+  if (rodape) {
+    const ioRodape = new IntersectionObserver(([e]) => html.classList.toggle('pl-rodape', e.isIntersecting), { rootMargin: '0px 0px -40px 0px' })
+    ioRodape.observe(rodape)
+    limpar.push(() => { ioRodape.disconnect(); html.classList.remove('pl-rodape') })
+  }
+
   // seção atual sublinhada na navegação
   const links: [HTMLElement, HTMLAnchorElement][] = []
   document.querySelectorAll<HTMLAnchorElement>('.nav__links .nav__link').forEach((a) => {
