@@ -165,8 +165,8 @@ export default function App() {
                 <li><span className="rows__name">Sintoma vai para o veterinário</span><p>Ela não dá diagnóstico: marca consulta ou indica um hospital 24h.</p></li>
                 <li><span className="rows__name">Painel para a recepção</span><p>Banhos marcados e pedidos de atendimento num só lugar. <a className="link" href="/painel">Abrir o painel desta demo</a></p></li>
               </ul>
-              <a className="link" href="https://alansouza.netlify.app" target="_blank" rel="noreferrer">Contratar uma assistente com o Alan</a>
-              <p className="t-small muted">Projeto de Alan Souza, desenvolvedor de IA em São Carlos.</p>
+              <div className="btn-row"><a className="btn btn--primary" href="https://wa.me/5519994450160?text=Oi%2C%20Alan%21%20Vi%20a%20demonstra%C3%A7%C3%A3o%20da%20Nina%20e%20quero%20uma%20assistente%20assim%20para%20o%20meu%20pet%20shop." target="_blank" rel="noreferrer">Quero uma Nina no meu pet shop</a></div>
+              <p className="t-small muted">Fala direto com o Alan Souza, desenvolvedor de IA em São Carlos, pelo WhatsApp. <a className="link" href="https://alansouza.netlify.app" target="_blank" rel="noreferrer">Ver o portfólio</a></p>
             </div>
             <figure className="develop span-6 start-7" data-moment="picture-develops"><img src="/img/corgi.jpg" alt="Filhote de corgi sentado num fundo laranja" width="1084" height="1600" loading="lazy" /></figure>
           </div>
